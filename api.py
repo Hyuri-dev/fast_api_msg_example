@@ -22,8 +22,8 @@ def get_db():
 async def root():
     return {"message": "Hello this is API for create Messages"}
 
-@app.get("/message")
-async def get_items():
+@app.get("/messages")
+async def get_messages():
     db = get_db()
     cur = db.cursor()
     cur.execute("SELECT id, text FROM mensajes")
@@ -31,8 +31,8 @@ async def get_items():
     db.close()
     return [{"id": mensaje[0], "text": mensaje[1]} for mensaje in mensajes]
 
-@app.post("/messages")
-async def create_item(mensaje: Message):
+@app.post("/message")
+async def create_message(mensaje: Message):
     db = get_db()
     cursor = db.cursor()
     cursor.execute("INSERT INTO mensajes (text) VALUES (?)", (mensaje.text, ))
@@ -43,7 +43,7 @@ async def create_item(mensaje: Message):
 
 #Endpoint para formularios html ( de prueba )
 @app.post("/messages-form")
-async def create_item(text: str = Form(...)):
+async def create_message_with_Form(text: str = Form(...)):
     db = get_db()
     cursor = db.cursor()
     cursor.execute("INSERT INTO mensajes (text) VALUES (?)", (text, ))
