@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Form
 from pydantic import BaseModel
 import sqlite3
 import os
@@ -42,7 +42,7 @@ async def create_item(mensaje: Message):
     return {"id": mensaje_id, "text": mensaje.text}
 
 #Endpoint para formularios html ( de prueba )
-@app.post("/messages")
+@app.post("/messages-form")
 async def create_item(text: str = Form(...)):
     db = get_db()
     cursor = db.cursor()
