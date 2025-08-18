@@ -35,12 +35,22 @@ async def get_items():
 async def create_item(mensaje: Message):
     db = get_db()
     cursor = db.cursor()
-    # CORRECCIÓN: el nombre de la tabla era 'mensaje' en lugar de 'mensajes'
     cursor.execute("INSERT INTO mensajes (text) VALUES (?)", (mensaje.text, ))
     db.commit()
     mensaje_id = cursor.lastrowid
     db.close()
     return {"id": mensaje_id, "text": mensaje.text}
+
+#Endpoint para formularios html ( de prueba )
+@app.post("/messages")
+async def create_item(text: str = Form(...)):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("INSERT INTO mensajes (text) VALUES (?)", (text, ))
+    db.commit()
+    mensaje_id = cursor.lastrowid
+    db.close()
+    return {"id": mensaje_id, "text": text}
 
 if __name__ == "__main__":
     import uvicorn
